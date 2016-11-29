@@ -3,6 +3,7 @@ package cn.qingchengfit.widgets;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
@@ -36,6 +37,8 @@ public class CheckableButton extends RelativeLayout {
     /*控件显示的文字内容*/
     private String mContent = "";
 
+    private String mHookIconLocation = "";
+
     private TextView content;
     private CheckBox checkBox;
     private RelativeLayout root;
@@ -46,8 +49,7 @@ public class CheckableButton extends RelativeLayout {
     private Context mContext;
 
     private CompoundButton.OnCheckedChangeListener mListener ;
-
-
+    private OnClickListener onClickListener;
 
     public CheckableButton(Context context) {
         super(context);
@@ -96,6 +98,7 @@ public class CheckableButton extends RelativeLayout {
         mBackgroundNormal = ta.getResourceId(R.styleable.CheckableButton_cb_background_normal, R.drawable.qcw_shape_bgcenter_white);
 
         mContent = ta.getString(R.styleable.CheckableButton_cb_text_content);
+        mHookIconLocation = ta.getString(R.styleable.CheckableButton_cb_hook_icon_location);
 
         isChecked = ta.getBoolean(R.styleable.CheckableButton_cb_select, false);
         ta.recycle();
@@ -132,8 +135,15 @@ public class CheckableButton extends RelativeLayout {
         checkBox.setButtonDrawable(mCheckboxIconSelect);
         root.setBackgroundResource(isChecked ? mBackgroundSelect : mBackgroundNormal);
         content.setTextColor(isChecked ? mTextColorSelect : mTextColorNormal);
-    }
 
+        LayoutParams params = (LayoutParams) checkBox.getLayoutParams();
+        if (TextUtils.isEmpty(mHookIconLocation) || "right".equals(mHookIconLocation)) {
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        } else if ("left".equals(mHookIconLocation)) {
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        }
+        checkBox.setLayoutParams(params); //使layout更新
+    }
 
     public void toggle(){
         checkBox.setChecked(!checkBox.isChecked());
@@ -151,7 +161,6 @@ public class CheckableButton extends RelativeLayout {
         mListener = listener;
     }
 
-    private OnClickListener onClickListener;
     public void setClick(OnClickListener listener){
         this.onClickListener = listener;
     }
