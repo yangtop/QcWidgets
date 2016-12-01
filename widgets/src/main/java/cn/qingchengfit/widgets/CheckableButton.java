@@ -53,14 +53,12 @@ public class CheckableButton extends RelativeLayout {
 
     public CheckableButton(Context context) {
         super(context);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
         init(context, null, 0);
         onFinishInflate();
     }
 
     public CheckableButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
         init(context, attrs, 0);
         onFinishInflate();
 
@@ -68,7 +66,6 @@ public class CheckableButton extends RelativeLayout {
 
     public CheckableButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
         init(context, attrs, defStyleAttr);
         onFinishInflate();
     }
@@ -76,7 +73,6 @@ public class CheckableButton extends RelativeLayout {
     @TargetApi(21)
     public CheckableButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
         init(context, attrs, defStyleAttr);
         onFinishInflate();
     }
@@ -102,6 +98,13 @@ public class CheckableButton extends RelativeLayout {
 
         isChecked = ta.getBoolean(R.styleable.CheckableButton_cb_select, false);
         ta.recycle();
+
+        if (TextUtils.isEmpty(mHookIconLocation) || "riht".equals(mHookIconLocation)) {
+            inflate(context, R.layout.qcw_layout_checkable_button, this);
+        } else if ("left".equals(mHookIconLocation)) {
+            inflate(context, R.layout.qcw_layout_checkable_button_left, this);
+        }
+
     }
 
     @Override
