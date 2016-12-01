@@ -36,6 +36,14 @@
       app:cb_text_content="测试"
       />
 
+  <cn.qingchengfit.widgets.CheckBoxButton
+      android:id="@+id/btn3"
+      android:layout_width="80dp"
+      android:layout_height="39dp"
+      app:cb_select="true"
+      app:cb_text_content="测试"
+      />
+
   <cn.qingchengfit.widgets.PhoneEditText
       android:layout_width="match_parent"
       android:layout_height="40dp"

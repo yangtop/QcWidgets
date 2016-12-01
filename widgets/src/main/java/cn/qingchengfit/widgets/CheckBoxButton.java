@@ -4,17 +4,18 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
  * Created by yangming on 16/11/11.
  */
 
-public class CheckableButton extends RelativeLayout {
+public class CheckBoxButton extends LinearLayout {
 
     /*选中时字体颜色*/
     private int mTextColorSelect = 0xffffffff;
@@ -36,6 +37,8 @@ public class CheckableButton extends RelativeLayout {
     /*控件显示的文字内容*/
     private String mContent = "";
 
+    private String mHookIconLocation = "";
+
     private TextView content;
     private CheckBox checkBox;
     //private RelativeLayout root;
@@ -48,31 +51,31 @@ public class CheckableButton extends RelativeLayout {
     private CompoundButton.OnCheckedChangeListener mListener;
     private OnClickListener onClickListener;
 
-    public CheckableButton(Context context) {
+    public CheckBoxButton(Context context) {
         super(context);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
+        inflate(context, R.layout.qcw_layout_checkbox_button, this);
         init(context, null, 0);
         onFinishInflate();
     }
 
-    public CheckableButton(Context context, AttributeSet attrs) {
+    public CheckBoxButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
+        inflate(context, R.layout.qcw_layout_checkbox_button, this);
         init(context, attrs, 0);
         onFinishInflate();
     }
 
-    public CheckableButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CheckBoxButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
+        inflate(context, R.layout.qcw_layout_checkbox_button, this);
         init(context, attrs, defStyleAttr);
         onFinishInflate();
     }
 
     @TargetApi(21)
-    public CheckableButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CheckBoxButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        inflate(context, R.layout.qcw_layout_checkable_button, this);
+        inflate(context, R.layout.qcw_layout_checkbox_button, this);
         init(context, attrs, defStyleAttr);
         onFinishInflate();
     }
@@ -105,9 +108,10 @@ public class CheckableButton extends RelativeLayout {
 
     @Override protected void onFinishInflate() {
         super.onFinishInflate();
+        setGravity(Gravity.CENTER);
+        setOrientation(LinearLayout.HORIZONTAL);
         content = (TextView) findViewById(R.id.tv_content);
         checkBox = (CheckBox) findViewById(R.id.cb_hoot);
-        //root = (RelativeLayout) findViewById(R.id.rl_root);
 
         content.setText(mContent);
         content.setTextSize(mTextSize);
@@ -124,13 +128,17 @@ public class CheckableButton extends RelativeLayout {
         checkBox.setButtonDrawable(mCheckboxIconSelect);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setTextAndBackground();
+                checkBox.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                setTextColorAndbackGround();
             }
         });
         checkBox.setChecked(isChecked);
     }
 
-    public void setTextAndBackground() {
+    /**
+     * 设置文字颜色和背景
+     */
+    public void setTextColorAndbackGround() {
         setBackgroundResource(checkBox.isChecked() ? mBackgroundSelect : mBackgroundNormal);
         content.setTextColor(checkBox.isChecked() ? mTextColorSelect : mTextColorNormal);
     }
