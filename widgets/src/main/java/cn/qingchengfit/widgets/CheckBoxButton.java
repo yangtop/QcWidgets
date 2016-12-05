@@ -53,21 +53,21 @@ public class CheckBoxButton extends LinearLayout {
 
     public CheckBoxButton(Context context) {
         super(context);
-        inflate(context, R.layout.qcw_layout_checkbox_button, this);
+        inflate(context, R.layout.qcw_layout_checkable_button_left, this);
         init(context, null, 0);
         onFinishInflate();
     }
 
     public CheckBoxButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.qcw_layout_checkbox_button, this);
+        inflate(context, R.layout.qcw_layout_checkable_button_left, this);
         init(context, attrs, 0);
         onFinishInflate();
     }
 
     public CheckBoxButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(context, R.layout.qcw_layout_checkbox_button, this);
+        inflate(context, R.layout.qcw_layout_checkable_button_left, this);
         init(context, attrs, defStyleAttr);
         onFinishInflate();
     }
@@ -75,7 +75,7 @@ public class CheckBoxButton extends LinearLayout {
     @TargetApi(21)
     public CheckBoxButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        inflate(context, R.layout.qcw_layout_checkbox_button, this);
+        inflate(context, R.layout.qcw_layout_checkable_button_left, this);
         init(context, attrs, defStyleAttr);
         onFinishInflate();
     }
@@ -101,6 +101,7 @@ public class CheckBoxButton extends LinearLayout {
                 R.drawable.qcw_shape_bgcenter_white);
 
         mContent = ta.getString(R.styleable.CheckableButton_cb_text_content);
+        //mHookIconLocation = ta.getString(R.styleable.CheckableButton_cb_hook_icon_location);
 
         isChecked = ta.getBoolean(R.styleable.CheckableButton_cb_select, false);
         ta.recycle();
@@ -112,27 +113,24 @@ public class CheckBoxButton extends LinearLayout {
         setOrientation(LinearLayout.HORIZONTAL);
         content = (TextView) findViewById(R.id.tv_content);
         checkBox = (CheckBox) findViewById(R.id.cb_hoot);
+        //root = (RelativeLayout) findViewById(R.id.rl_root);
 
         content.setText(mContent);
         content.setTextSize(mTextSize);
 
+        checkBox.setChecked(isChecked);
         setOnClickListener(new OnClickListener() {
             @Override public void onClick(View view) {
                 checkBox.toggle();
+                checkBox.setVisibility(checkBox.isChecked() ? View.VISIBLE : View.GONE);
+                setTextColorAndbackGround();
                 if (onClickListener != null) {
                     onClickListener.onClick(view);
                 }
             }
         });
-
         checkBox.setButtonDrawable(mCheckboxIconSelect);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                checkBox.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                setTextColorAndbackGround();
-            }
-        });
-        checkBox.setChecked(isChecked);
+        setTextColorAndbackGround();
     }
 
     /**
@@ -157,6 +155,7 @@ public class CheckBoxButton extends LinearLayout {
 
     public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
         mListener = listener;
+        checkBox.setOnCheckedChangeListener(mListener);
     }
 
     public void setClick(OnClickListener listener) {

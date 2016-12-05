@@ -118,15 +118,11 @@ public class CheckableButton extends RelativeLayout {
                 if (onClickListener != null) {
                     onClickListener.onClick(view);
                 }
+                setTextAndBackground();
             }
         });
 
         checkBox.setButtonDrawable(mCheckboxIconSelect);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setTextAndBackground();
-            }
-        });
         checkBox.setChecked(isChecked);
     }
 
@@ -149,6 +145,7 @@ public class CheckableButton extends RelativeLayout {
 
     public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
         mListener = listener;
+        checkBox.setOnCheckedChangeListener(mListener);
     }
 
     public void setClick(OnClickListener listener) {
